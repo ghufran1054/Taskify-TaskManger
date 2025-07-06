@@ -26,7 +26,7 @@ const LoginPage = () => {
         password={password}
         setPassword={setPassword}
         onSubmit={handleLogin}
-        extra={<Link to="/signup">Don't have an account? Sign up</Link>}
+        extra={<Link to="/signup" className="text-blue-600 hover:underline">Don't have an account? Sign up</Link>}
       />
     </AuthLayout>
   );

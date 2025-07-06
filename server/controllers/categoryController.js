@@ -6,7 +6,7 @@ exports.getcategories = async (req, res) => {
 };
 
 exports.createcategory = async (req, res) => {
-  const category = new category({ ...req.body, userId: req.user.userId });
+  const category = new Category({ ...req.body, userId: req.user.userId });
   await category.save();
   res.status(201).json(category);
 };
