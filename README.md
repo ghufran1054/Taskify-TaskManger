@@ -20,4 +20,5 @@ Add tasks, mark them as completed, and delete them. You can also filter tasks by
 
 ### Links
 
-- [Documentation and Demo Link] (https://docs.google.com/document/d/1sFZPEYxE722ZgN5aKmEOLBclYd4mNH3_Iwch9ljhphY/edit?usp=sharing)
+- [Documentation] (https://docs.google.com/document/d/1sFZPEYxE722ZgN5aKmEOLBclYd4mNH3_Iwch9ljhphY/edit?usp=sharing)
+- [Demo Video Link] (https://drive.google.com/file/d/1y2bJ2ML_hTbLc07DTWztolLzwj3zu-4X/view?usp=sharing)
