@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { TaskController } from '../controllers/TaskController';
 import { useTasks } from '../context/TaskContext';
 import TaskList from '../components/Dashboard/TaskList';
-import SearchBar from '../components/Dashboard/SearchBar';
 import {Clock10, ChevronLeft, ChevronRight} from "lucide-react";
 import Button from '../components/UI/Button';
 import {useNavigate} from 'react-router-dom';
@@ -49,7 +48,6 @@ const CompletedTasks = () => {
   };
   return (
     <div  className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <SearchBar/>
         {!loading && tasks.length === 0 && (
         <div className="text-center py-12 flex flex-col">
           {<Clock10 className="w-16 h-16 text-green-500 mx-auto mb-4" />}

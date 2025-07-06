@@ -40,7 +40,6 @@ exports.getTasks = async (req, res) => {
     const skip = (parseInt(page) - 1) * parseInt(limit);
     const sortOrder = sort === "desc" ? -1 : 1;
 
-    console.log(filter);
     // Query with pagination, filtering, sorting
     const tasks = await Task.find(filter)
       .sort({ deadline: sortOrder })
@@ -50,7 +49,6 @@ exports.getTasks = async (req, res) => {
 
     // Optional: Total count for pagination
     const total = await Task.countDocuments(filter);
-    // console.log(tasks);
     res.json({
       tasks,
       total,

@@ -114,7 +114,6 @@ export const TaskController = () => {
     }
     query = query.slice(0, -1);
 
-    // console.log(queryObj);
     console.log(query);
     try {
       const res = await fetch(`http://localhost:5000/api/tasks?${query}`, {

@@ -5,7 +5,6 @@ import { useTasks } from '../context/TaskContext';
 import TaskList from '../components/Dashboard/TaskList';
 import TaskModal from '../components/Dashboard/TaskModal';
 import { useCategoryController } from '../controllers/CategoryController';
-import SearchBar from '../components/Dashboard/SearchBar';
 import DashboardHeader from '../components/Dashboard/DashboardHeader';
 import {useNavigate} from 'react-router-dom';
 import { CheckCircle2, ChevronLeft, ChevronRight } from "lucide-react";
@@ -89,7 +88,6 @@ const Dashboard = () => {
 
   return (
     <div  className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <SearchBar/>
       <DashboardHeader tasks={tasks} handleAddTask={handleAddTask} handleViewCompleted={handleViewCompleted}/>
       {!loading && tasks.length === 0 && (
         <div className="text-center py-12 flex flex-col">

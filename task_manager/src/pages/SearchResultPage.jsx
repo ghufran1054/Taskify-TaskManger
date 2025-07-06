@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { TaskController } from '../controllers/TaskController';
 import { useTasks } from '../context/TaskContext';
 import TaskList from '../components/Dashboard/TaskList';
-import SearchBar from '../components/Dashboard/SearchBar';
 import TaskModal from '../components/Dashboard/TaskModal';
 import Pagination from '../components/UI/Pagination';
 import { useNavigate } from 'react-router-dom';
@@ -81,7 +80,6 @@ const SearchResults = () => {
 
   return (
     <div  className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <SearchBar/>
       { // Giving message for no search results
         !loading && !error && tasks.length === 0 && (
         <div className="text-center py-12 flex flex-col">
