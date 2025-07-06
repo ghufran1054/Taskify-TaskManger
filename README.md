@@ -16,3 +16,8 @@ Add tasks, mark them as completed, and delete them. You can also filter tasks by
 4. Enter your `MONGOD_URI` and `JWT_SECRET` in the `.env` file.
 5. `npm i` to install necessary packages and use `npm run start` to start the server.
 6. From root directory `cd task_manager` to step into clent side code. Run `npm i` to install necessary packages and use `npm run dev` to start the client side code.
+
+
+### Links
+
+- [Documentation and Demo Link] (https://docs.google.com/document/d/1sFZPEYxE722ZgN5aKmEOLBclYd4mNH3_Iwch9ljhphY/edit?usp=sharing)
