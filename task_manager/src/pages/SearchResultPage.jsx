@@ -1,42 +1,41 @@
 import React, { useState, useEffect } from 'react';
-import TaskCard from '../components/Dashboard/TaskCard';
 import { TaskController } from '../controllers/TaskController';
 import { useTasks } from '../context/TaskContext';
 import TaskList from '../components/Dashboard/TaskList';
-import TaskModal from '../components/Dashboard/TaskModal';
-import { useCategoryController } from '../controllers/CategoryController';
 import SearchBar from '../components/Dashboard/SearchBar';
-import DashboardHeader from '../components/Dashboard/DashboardHeader';
-import {useNavigate} from 'react-router-dom';
-import { CheckCircle2, ChevronLeft, ChevronRight } from "lucide-react";
+import TaskModal from '../components/Dashboard/TaskModal';
 import Pagination from '../components/UI/Pagination';
-// Pagination Component
-
-
-
-const Dashboard = () => {
-  const { pendingTasks: tasks } = useTasks();
+import { useNavigate } from 'react-router-dom';
+import { Clock10 } from 'lucide-react';
+const SearchResults = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+
+  const { filterTasks, updateTask, deleteTask} = TaskController();
+  const {searchQuery, setSearchQuery, searchTasks: tasks} = useTasks();
+
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false); // Modal state
   const [isCreate, setIsCreate] = useState(true);
   const [taskToEdit, setTaskToEdit] = useState(null);
 
-  const { fetchPaginatedTasks, updateTask, deleteTask} = TaskController();
   const {page, totalPages} = useTasks();
-  const {fetchCategories} = useCategoryController();
-
   const navigate = useNavigate();
-  // Handle opening the add task modal
-  const handleAddTask = () => {
-    setIsCreate(true);
-    setIsTaskModalOpen(true);
-  };
+  useEffect(() => {
+    const loadTasks = async () => {
+      try {
+        setLoading(true);
+        await filterTasks(searchQuery);
+        setLoading(false);
+      } catch (err) {
+        console.log(err);
+        setError('Failed to load tasks');
+        setLoading(false);
+      }
+    };
 
-  // Handle closing the add task modal
-  const handleCloseModal = () => {
-    setIsTaskModalOpen(false);
-  };
+    loadTasks();
+  }, [searchQuery]);
 
   const handleViewDetails = (task) => {
     setIsCreate(false);
@@ -46,33 +45,23 @@ const Dashboard = () => {
 
   // Handle page change
   const handlePageChange = async (newPage) => {
+
+    // Set this new page in the searchQueryObject
+
+    setSearchQuery({...searchQuery, page: newPage});
+
     try {
       setLoading(true);
-      await fetchPaginatedTasks({status: 'incomplete', page: newPage});
+      await filterTasks(searchQuery);
       setLoading(false);
     } catch (err) {
       setError('Failed to load tasks');
       setLoading(false);
     }
+
   };
 
-  useEffect(() => {
-    const loadTasks = async () => {
-      try {
-        setLoading(true);
-        await fetchPaginatedTasks({status: 'incomplete'});
-        await fetchCategories();
-        setLoading(false);
-      } catch (err) {
-        setError('Failed to load tasks');
-        setLoading(false);
-      }
-    };
-
-    loadTasks();
-  }, []);
-
-  const handleViewCompleted = () => {
+    const handleViewCompleted = () => {
     navigate('/completed');
   };
 
@@ -86,33 +75,38 @@ const Dashboard = () => {
     await deleteTask(task._id);
   };
 
+  const handleCloseModal = () => {
+    setIsTaskModalOpen(false);
+  };
 
   return (
     <div  className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <SearchBar/>
-      <DashboardHeader tasks={tasks} handleAddTask={handleAddTask} handleViewCompleted={handleViewCompleted}/>
-      {!loading && tasks.length === 0 && (
+      { // Giving message for no search results
+        !loading && !error && tasks.length === 0 && (
         <div className="text-center py-12 flex flex-col">
-          {<CheckCircle2 className="w-16 h-16 text-green-500 mx-auto mb-4" />}
+          {<Clock10 className="w-16 h-16 text-green-500 mx-auto mb-4" />}
           <h3 className="text-xl font-medium text-gray-900 mb-2">
-            {"No Incomplete Tasks"}
+            {"No search results"}
           </h3>
           <p className="text-gray-600">
-            {"You have no incomplete tasks. Great Job !"}
+            {"No search results found"}
           </p>
         </div>
-      )}
+        )
+      }
       <TaskList 
         tasks={tasks} 
         loading={loading} 
         error={error} 
-        handleAddTask={handleAddTask}
+        handleDelete={handleDelete}
+        completed={true}
         handleViewDetails={handleViewDetails}
         handleMarkComplete={handleMarkComplete}
-        handleDelete={handleDelete}
+        handleViewCompleted={handleViewCompleted}
       />
-      
-      {/* Pagination Component */}
+
+            {/* Pagination Component */}
       <Pagination 
         currentPage={page} 
         totalPages={totalPages} 
@@ -129,5 +123,4 @@ const Dashboard = () => {
     </div>
   );
 };
-
-export default Dashboard;
+export default SearchResults;

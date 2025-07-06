@@ -17,6 +17,7 @@ import {
 import { useCategories } from "../../context/CategoryContext";
 import {useCategoryController} from "../../controllers/CategoryController";
 import { TaskController } from "../../controllers/TaskController";
+import Button from "../UI/Button";
 
 const TaskModal = ({ isOpen, onClose, task = null, mode = "create" }) => {
   const isEditMode = mode === "edit" && task;
@@ -314,7 +315,7 @@ const TaskModal = ({ isOpen, onClose, task = null, mode = "create" }) => {
 
   return (
     <>
-      <div className="fixed inset-0 flex items-center justify-center z-50 p-4">
+      <div className="fixed bg-black/50 inset-0 flex items-center justify-center z-50 p-4">
         <div className="bg-white rounded-lg shadow-xl w-full max-w-md max-h-[90vh] overflow-y-auto">
           {/* Header */}
           <div className="flex items-center justify-between p-6 border-b border-gray-200">
@@ -430,7 +431,8 @@ const TaskModal = ({ isOpen, onClose, task = null, mode = "create" }) => {
                   disabled={isSubmitting}
                 />
               ) : (
-                <div className="px-3 py-2 bg-gray-50 rounded-lg text-gray-900 min-h-[80px]">
+                // TODO
+                <div className="px-3 py-2 bg-gray-50 rounded-lg text-gray-900 flex">
                   {formData.description || "No description"}
                 </div>
               )}
@@ -452,7 +454,7 @@ const TaskModal = ({ isOpen, onClose, task = null, mode = "create" }) => {
                     <select
                       id="category"
                       name="category"
-                      value={formData.category}
+                      value={formData.category?.name || ""}
                       onChange={handleInputChange}
                       className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200 ${
                         errors.category ? "border-red-500" : "border-gray-300"
@@ -528,7 +530,7 @@ const TaskModal = ({ isOpen, onClose, task = null, mode = "create" }) => {
                 )
               ) : (
                 <div className="px-3 py-2 bg-gray-50 rounded-lg text-gray-900">
-                  {categories.find(cat => cat._id === formData.category)?.name || "No category"}
+                  {categories.find(cat => cat._id === formData.category._id)?.name || "No category"}
                 </div>
               )}
             </div>
@@ -616,7 +618,7 @@ const TaskModal = ({ isOpen, onClose, task = null, mode = "create" }) => {
               </button>
               
               {isEditing && (
-                <button
+                <Button
                   type="button"
                   onClick={handleSubmit}
                   disabled={isSubmitting}
@@ -637,7 +639,7 @@ const TaskModal = ({ isOpen, onClose, task = null, mode = "create" }) => {
                       {isEditMode ? "Save Changes" : "Create Task"}
                     </>
                   )}
-                </button>
+                </Button>
               )}
             </div>
           </div>
@@ -646,7 +648,7 @@ const TaskModal = ({ isOpen, onClose, task = null, mode = "create" }) => {
 
       {/* Confirmation Modal */}
       {showConfirmation && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-60 p-4">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-60 p-4">
           <div className="bg-white rounded-lg shadow-xl w-full max-w-sm">
             <div className="p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-2">

@@ -5,17 +5,42 @@ exports.getTasks = async (req, res) => {
     const userId = req.user.userId;
 
     // Query params
-    const { status, sort = "asc", page = 1, limit = 10 } = req.query;
+    const {
+      title,
+      status,
+      sort = "asc",
+      page = 1,
+      limit = 10,
+      start,
+      end,
+      categories,
+    } = req.query;
 
     // Build the filter object
     const filter = { userId };
+    if (categories) {
+      filter.category = { $in: categories.split(",") };
+    }
+    if (title) filter.title = { $regex: new RegExp(title, "i") };
     if (status === "completed") filter.completed = true;
     if (status === "incomplete") filter.completed = false;
+
+    // Add date range filter if provided
+    if (start || end) {
+      filter.deadline = {};
+      if (start) {
+        filter.deadline.$gte = new Date(start);
+      }
+      if (end) {
+        filter.deadline.$lte = new Date(end);
+      }
+    }
 
     // Pagination values
     const skip = (parseInt(page) - 1) * parseInt(limit);
     const sortOrder = sort === "desc" ? -1 : 1;
 
+    console.log(filter);
     // Query with pagination, filtering, sorting
     const tasks = await Task.find(filter)
       .sort({ deadline: sortOrder })
@@ -25,7 +50,7 @@ exports.getTasks = async (req, res) => {
 
     // Optional: Total count for pagination
     const total = await Task.countDocuments(filter);
-
+    // console.log(tasks);
     res.json({
       tasks,
       total,
@@ -37,6 +62,7 @@ exports.getTasks = async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 };
+
 
 
 exports.createTask = async (req, res) => {

@@ -37,7 +37,7 @@ const Navbar = () => {
         <div className={token ? "flex justify-between items-center h-16" : "flex justify-center items-center h-16"}>
           {/* Logo/Title */}
           <div className="flex items-center">
-            <h1 className="text-2xl font-bold text-indigo-600 hover:text-indigo-700 transition-colors duration-200">
+            <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 duration-200">
               Taskify
             </h1>
           </div>

@@ -4,6 +4,8 @@ import SignupPage from "./pages/SignupPage";
 import { useAuth } from "./context/AuthContext";
 import DashboardPage from "./pages/DashboardPage.jsx"
 import Navbar from "./components/UI/Navbar.jsx";
+import CompletedTasks from "./pages/CompletedTaskPage.jsx";
+import SearchResults from "./pages/SearchResultPage.jsx";
 const ProtectedRoute = ({ children }) => {
   const { token } = useAuth();
   return token ? children : <Navigate to="/signup" />;
@@ -20,6 +22,22 @@ const App = () => {
         <Route path="/" element={<Navigate to={token ? "/dashboard" : "/signup"} />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
+        <Route
+          path="/search"
+          element={
+            <ProtectedRoute>
+              <SearchResults />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/completed"
+          element={
+            <ProtectedRoute>
+              <CompletedTasks />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/dashboard"
           element={
